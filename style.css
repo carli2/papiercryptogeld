@@ -1,0 +1,37 @@
+body {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: stretch;
+}
+
+body>div {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	align-items: stretch;
+}
+
+#scan {
+	min-width: 5cm;
+	flex-grow: 1;
+}
+
+#scan video {
+	width: 100%;
+}
+
+#scan2 {
+	min-width: 5cm;
+	flex-grow: 1;
+}
+
+#qrdescription {
+	font-size: 140%;
+}
+
+#pocket {
+	flex-grow: 3;
+}

@@ -1,0 +1,5 @@
+{
+    "require": {
+        "mdanter/ecc": "^0.4.2"
+    }
+}
