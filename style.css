@@ -50,13 +50,6 @@ body>div {
 .scramble {
 	background-image:
 		radial-gradient(ellipse at center, #ffffff 0%,#000000 31%,#ffffff 59%,#000000 100%);
-		/*linear-gradient(-45deg,
-				transparent 15%,
-				rgba(0,0,0,0.1) 15%,
-				rgba(0,0,0,0.1) 50%,
-				transparent 50%,
-				transparent 65%,
-				rgba(0,0,0,0.1) 65%);*/
 	background-size: 10px 10px;
 }
 
@@ -91,4 +84,20 @@ body>div {
 .bill .wert {
 	font-size: 120%;
 	font-weight: bold;
+}
+
+.bill qrcode {
+	width: 3cm;
+	height: 3cm;
+}
+
+.bill qrcode canvas {
+	width: 100%;
+	height: 100%;
+}
+
+@media print {
+	#scan, #scan2, .noprint {
+		display: none;
+	}
 }

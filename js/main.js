@@ -19,18 +19,32 @@ app.controller('Main', function ($scope) {
 		{pub: 'pub2', amount: 0.7, priv: 'priv2'},
 		{pub: 'pub3', amount: 6, priv: 'priv3'}
 	];
+
+	$scope.opts = {
+		nopriv: true // TODO: localStorage
+	};
+
+	$scope.print = function () {
+		var oldopts = $scope.opts.nopriv;
+		$scope.opts.nopriv = false;
+		window.setTimeout(function () {
+			window.print();
+			$scope.opts.nopriv = oldopts;
+			$scope.$apply();
+		}, 0);
+	}
 });
 
 app.directive('bill', function () {
 	return {
 		restrict: 'E',
-		scope: { ngModel: '=' },
+		scope: { ngModel: '=', hidePriv: '=' },
 		controller: function ($scope) {
 			$scope.bank = 'Werkraum Zittau e.V.';
 			$scope.bankurl = 'https://launix.de/';
 		},
-		template: '<div class="bill"><qrcode size="100" data="{{ngModel.pub}}"></qrcode><div class="main">'
+		template: '<div class="bill"><qrcode size="400" data="{{ngModel.pub}}"></qrcode><div class="main">'
 		+'Seriennummer: {{ngModel.pub}}<br><span class="wert">Wert: {{ngModel.amount|number:2}}</span><br>{{bank}}<br><a ng-href="bankurl" target="_blank">{{bankurl}}</a>'
-		+'</div><div class="scramble" ng-if="ngModel.priv"></div><div class="trenner" ng-if="ngModel.priv"><span>hier knicken</span></div><qrcode size="100" data="{{ngModel.pub}}" ng-if="ngModel.priv"></qrcode></div>'
+		+'</div><div class="scramble" ng-if="ngModel.priv && !hidePriv"></div><div class="trenner" ng-if="ngModel.priv && !hidePriv"><span>hier knicken</span></div><qrcode size="400" data="{{ngModel.pub}}" ng-if="ngModel.priv && !hidePriv"></qrcode></div>'
 	};
 });

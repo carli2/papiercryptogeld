@@ -26,8 +26,11 @@
 	</div>
 	<div id="pocket">
 		<h2>Meine Geldbörse</h2>
-		<bill ng-repeat="bill in pocket" ng-model="bill"></bill>
-		<button>Geld ausdrucken</button>
+		<div class="noprint">
+			<input type="checkbox" ng-model="opts.nopriv" id="nopriv"><label for="nopriv">Private Schlüssel verstecken</label>
+		</div>
+		<bill ng-repeat="bill in pocket" ng-model="bill" hide-priv="opts.nopriv"></bill>
+		<button class="noprint" ng-click="print()">Geld ausdrucken</button>
 	</div>
 </body>
 </html>

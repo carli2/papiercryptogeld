@@ -10,7 +10,5 @@ $(function () {
 	}).catch(function (e) {
 		console.error(e);
 	});
-
-	printQR('asdffj35iu348953904930239024324234324233432423', '12 Euro');
 });
 
