@@ -1,4 +1,4 @@
 <?php
 
-$db = new PDO('mysql:host=localhost;dbname=...', '...', '...);
+$db = new PDO('mysql:host=localhost;dbname=...', '...', '...');
 
