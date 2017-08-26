@@ -35,3 +35,60 @@ body>div {
 #pocket {
 	flex-grow: 3;
 }
+
+.bill {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: no-wrap;
+	justify-content: space-around;
+	align-items: stretch;
+
+	border: 1px dashed black;
+	margin-bottom: 2mm;
+}
+
+.scramble {
+	background-image:
+		radial-gradient(ellipse at center, #ffffff 0%,#000000 31%,#ffffff 59%,#000000 100%);
+		/*linear-gradient(-45deg,
+				transparent 15%,
+				rgba(0,0,0,0.1) 15%,
+				rgba(0,0,0,0.1) 50%,
+				transparent 50%,
+				transparent 65%,
+				rgba(0,0,0,0.1) 65%);*/
+	background-size: 10px 10px;
+}
+
+.bill .scramble {
+	width: 120px;
+}
+
+.bill .trenner {
+	margin-left: 10px;
+	margin-right: 10px;
+	border-right: 3px dashed rgba(0,0,0,0.2);
+	position: relative;
+}
+.bill .trenner span {
+	transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+	display: block;
+	white-space: nowrap;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	height: 2px;
+	margin-top: -1px;
+	line-height: 0px;
+	text-align: center;
+}
+
+.bill .main {
+	flex-grow: 1;
+	padding: 15px;
+}
+
+.bill .wert {
+	font-size: 120%;
+	font-weight: bold;
+}

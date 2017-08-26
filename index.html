@@ -26,9 +26,7 @@
 	</div>
 	<div id="pocket">
 		<h2>Meine Geldbörse</h2>
-		<div>
-			Hello {{qrtext}}
-		</div>
+		<bill ng-repeat="bill in pocket" ng-model="bill"></bill>
 		<button>Geld ausdrucken</button>
 	</div>
 </body>
