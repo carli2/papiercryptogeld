@@ -15,9 +15,9 @@ app.controller('Main', function ($scope) {
 	$scope.qrtext = 'Hello World';
 
 	$scope.pocket = [
-		{pub: 'pub1', amount: 1.3, priv: 'priv1'},
-		{pub: 'pub2', amount: 0.7, priv: 'priv2'},
-		{pub: 'pub3', amount: 6, priv: 'priv3'}
+		new Token(),
+		new Token('priv:7181b448f2d4da91837819ac17c47558a01ff512f8136ede3bf64c216da02440'),
+		new Token('pub:033190e743da9bd661965126e7626f40ba29ccde72c702738b26e4ead9198c6e57')
 	];
 
 	$scope.opts = {
@@ -43,8 +43,8 @@ app.directive('bill', function () {
 			$scope.bank = 'Werkraum Zittau e.V.';
 			$scope.bankurl = 'https://launix.de/';
 		},
-		template: '<div class="bill"><qrcode size="400" data="{{ngModel.pub}}"></qrcode><div class="main">'
+		template: '<div class="bill"><qrcode size="400" data="pub:{{ngModel.pub}}"></qrcode><div class="main">'
 		+'Seriennummer: {{ngModel.pub}}<br><span class="wert">Wert: {{ngModel.amount|number:2}}</span><br>{{bank}}<br><a ng-href="bankurl" target="_blank">{{bankurl}}</a>'
-		+'</div><img src="scramble.png" class="scramble" ng-if="ngModel.priv && !hidePriv"><div class="trenner" ng-if="ngModel.priv && !hidePriv"><span>hier knicken</span></div><qrcode size="400" data="{{ngModel.pub}}" ng-if="ngModel.priv && !hidePriv"></qrcode></div>'
+		+'</div><img src="scramble.png" class="scramble" ng-if="ngModel.priv && !hidePriv"><div class="trenner" ng-if="ngModel.priv && !hidePriv"><span>hier knicken</span></div><qrcode size="400" data="priv:{{ngModel.priv}}" ng-if="ngModel.priv && !hidePriv"></qrcode></div>'
 	};
 });

@@ -7,3 +7,6 @@ Mittels ECC-Kryptografie werden Geldscheine erstellt, die aus einem privaten und
 Ein Geldschein wird so gefaltet, dass der öffentliche Schlüssel als QR-Code sichtbar ist, während der QR-Code mit dem private Schlüssel weggeknickt wird.
 
 Ein Geldschein kann auf zwei Weisen gescannt werden: Zum Überprüfen der Richtigkeit scant man den öffentlichen Schlüssel. Zum Bezahlen wird hingegen der private Schlüssel gescant.
+
+## Installation
+Zur Installation einfach alles auf dem Server entpacken, npm install und composer update durchführen, anschließend `conf.php.dist` nach `conf.php` kopieren und bearbeiten.
