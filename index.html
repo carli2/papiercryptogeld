@@ -25,6 +25,10 @@
 		<h2>Gescanntes Ergebnis</h2>
 		<qrcode data="{{qrtext}}" size="{{vh()}}"></qrcode>
 		<input ng-model="qrtext">
+		<bill ng-if="qrbill" ng-model="qrbill"></bill>
+		<div ng-if="qrbill">
+			<button>In die Geldbörse aufnehmen</button>
+		</div>
 	</div>
 	<div id="pocket">
 		<h2>Meine Geldbörse</h2>

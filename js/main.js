@@ -10,6 +10,12 @@ app.controller('Main', function ($scope) {
 	}
 	window.onScan = function (qrtext) {
 		$scope.qrtext = qrtext;
+		$scope.qrbill = null;
+		try {
+			$scope.qrbill = new Token(qrtext);
+			console.log($scope.qrbill);
+		} catch (e) {
+		}
 		$scope.$apply();
 	}
 	$scope.qrtext = 'Hello World';
