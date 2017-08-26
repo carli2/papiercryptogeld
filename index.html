@@ -5,23 +5,30 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
+<script type="text/javascript" src="node_modules/qrcode-generator/qrcode.js"></script>
+<script type="text/javascript" src="node_modules/qrcode-generator/qrcode_UTF8.js"></script>
+<script type="text/javascript" src="node_modules/angular-qrcode/angular-qrcode.js"></script>
 <script type="text/javascript" src="js/instascan.min.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
 <script type="text/javascript" src="js/scan.js"></script>
-<script type="text/javascript" src="js/qrcode.min.js"></script>
 <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body ng-app="app" ng-controller="Main">
 	<div id="scan">
 		<h2>Scannen Sie Geldscheine</h2>
 		<video id="preview"></video>
 	</div>
 	<div id="scan2">
 		<h2>Gescanntes Ergebnis</h2>
-		<div id="qrcode"></div>
-		<div id="qrdescription"></div>
+		<qrcode data="{{qrtext}}" size="{{vh()}}"></qrcode>
+		<input ng-model="qrtext">
 	</div>
 	<div id="pocket">
 		<h2>Meine Geldbörse</h2>
+		<div>
+			Hello {{qrtext}}
+		</div>
 		<button>Geld ausdrucken</button>
 	</div>
 </body>

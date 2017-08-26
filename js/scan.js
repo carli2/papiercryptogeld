@@ -14,18 +14,3 @@ $(function () {
 	printQR('asdffj35iu348953904930239024324234324233432423', '12 Euro');
 });
 
-var currentQR = null;
-function printQR(text, description) {
-	if (currentQR) {
-		currentQR.clear();
-		currentQR.makeCode(text);
-	} else {
-		currentQR = new QRCode(document.getElementById('qrcode'), text);
-	}
-	$('#qrdescription').text(description);
-}
-
-function onScan(qrtext) {
-	console.log('scanned '+qrtext);
-	printQR(qrtext, 'Gelesener Text: ' + qrtext);
-}
