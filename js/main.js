@@ -45,6 +45,6 @@ app.directive('bill', function () {
 		},
 		template: '<div class="bill"><qrcode size="400" data="{{ngModel.pub}}"></qrcode><div class="main">'
 		+'Seriennummer: {{ngModel.pub}}<br><span class="wert">Wert: {{ngModel.amount|number:2}}</span><br>{{bank}}<br><a ng-href="bankurl" target="_blank">{{bankurl}}</a>'
-		+'</div><div class="scramble" ng-if="ngModel.priv && !hidePriv"></div><div class="trenner" ng-if="ngModel.priv && !hidePriv"><span>hier knicken</span></div><qrcode size="400" data="{{ngModel.pub}}" ng-if="ngModel.priv && !hidePriv"></qrcode></div>'
+		+'</div><img src="scramble.png" class="scramble" ng-if="ngModel.priv && !hidePriv"><div class="trenner" ng-if="ngModel.priv && !hidePriv"><span>hier knicken</span></div><qrcode size="400" data="{{ngModel.pub}}" ng-if="ngModel.priv && !hidePriv"></qrcode></div>'
 	};
 });

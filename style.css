@@ -41,20 +41,15 @@ body>div {
 	flex-direction: row;
 	flex-wrap: no-wrap;
 	justify-content: space-around;
-	align-items: stretch;
+	align-items: center;
 
 	border: 1px dashed black;
 	margin-bottom: 2mm;
 }
 
-.scramble {
-	background-image:
-		radial-gradient(ellipse at center, #ffffff 0%,#000000 31%,#ffffff 59%,#000000 100%);
-	background-size: 10px 10px;
-}
-
 .bill .scramble {
 	width: 120px;
+	height: 120px;
 }
 
 .bill .trenner {
