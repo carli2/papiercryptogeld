@@ -113,12 +113,20 @@ app.controller('Main', function ($scope) {
 		$scope.qrbill = bill;
 	}
 
-	$scope.remove = function (bill) {
+	$scope.has = function (pub) {
+		for (var i = 0; i < $scope.pocket.length; i++) {
+			if ($scope.pocket[i].pub == pub) return true;
+		}
+		return false;		
+	}
+
+	$scope.remove = function (pub) {
 		if (confirm('Mit dem Löschen des Scheins verlieren Sie das Geld, wenn Sie es vorher nicht eingescant haben')) {
-			delete localStorage['pub:' + bill.pub];
-			delete localStorage['priv:' + bill.priv];
 			for (var i = 0; i < $scope.pocket.length; i++) {
-				if ($scope.pocket[i].pub == bill.pub) {
+				var bill = $scope.pocket[i];
+				if (bill.pub == pub) {
+					delete localStorage['pub:' + bill.pub];
+					delete localStorage['priv:' + bill.priv];
 					$scope.pocket.splice(i, 1);
 					return;
 				}
@@ -159,6 +167,25 @@ app.controller('Main', function ($scope) {
 				delete localStorage['priv:' + bill.priv];
 				return false;
 			}
+		});
+	}
+
+	$scope.fuse = function (bill2) {
+		var amount = Number(bill2.amount);
+		var input = $scope.pocket.filter(function (bill) {
+			if (bill.priv && bill.selected && bill.amount > 0 && bill.pub != bill2.pub) {
+				amount += Number(bill.amount);
+				return true;
+			} else return false;
+		});
+		input.push(bill2);
+		var output = [];
+
+		var newToken = new Token(undefined, refresh);
+		newToken.amount = amount;
+		performTransaction(input, [newToken], function () {
+			$scope.qrtext = 'Erfolg';
+			$scope.qrbill = null;
 		});
 	}
 
