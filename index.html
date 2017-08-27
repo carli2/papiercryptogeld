@@ -46,10 +46,11 @@
 		<div class="noprint">
 			<input type="checkbox" ng-model="opts.nopriv" id="nopriv"><label for="nopriv">Private Schlüssel verstecken</label>
 		</div>
-		<bill ng-repeat="bill in pocket" ng-model="bill" hide-priv="opts.nopriv"></bill>
+		<bill ng-show="!opts.printMode || bill.selected" ng-repeat="bill in pocket" ng-model="bill" hide-priv="opts.nopriv"></bill>
 		<button class="noprint" ng-if="numSelected()" ng-click="removeSelected()">Ausgewählte entfernen</button>
 		<button class="noprint" ng-if="numSelected()" ng-click="slice()">Ausgewählte Scheine anders stückeln</button>
 		<hr class="noprint"/>
+		<button class="noprint" ng-if="numSelected()" ng-click="print(true)">nur ausgewählte Scheine ausdrucken</button>
 		<button class="noprint" ng-click="print()">Geld ausdrucken</button>
 		<hr class="noprint"/>
 		<button class="noprint" ng-click="refreshAll()">aktualisieren</button>

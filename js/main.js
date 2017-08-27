@@ -303,12 +303,14 @@ app.controller('Main', function ($scope) {
 		return true;
 	}
 
-	$scope.print = function () {
+	$scope.print = function (onlySelected) {
 		var oldopts = $scope.opts.nopriv;
 		$scope.opts.nopriv = false;
+		if (onlySelected) $scope.opts.printMode = true;
 		window.setTimeout(function () {
 			window.print();
 			$scope.opts.nopriv = oldopts;
+			$scope.opts.printMode = false;
 			$scope.$apply();
 		}, 0);
 	}
