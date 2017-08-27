@@ -81,6 +81,12 @@ body>div {
 	font-weight: bold;
 }
 
+.bill .invalid {
+	font-weight: bold;
+	color: red;
+	text-decoration: line-through;
+}
+
 .bill qrcode {
 	width: 3cm;
 	height: 3cm;

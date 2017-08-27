@@ -12,8 +12,9 @@ app.controller('Main', function ($scope) {
 		$scope.qrtext = qrtext;
 		$scope.qrbill = null;
 		try {
-			$scope.qrbill = new Token(qrtext);
-			console.log($scope.qrbill);
+			$scope.qrbill = new Token(qrtext, function () {
+				$scope.$apply();
+			});
 		} catch (e) {
 		}
 		$scope.$apply();
@@ -54,7 +55,7 @@ app.directive('bill', function () {
 			$scope.bankurl = 'https://launix.de/';
 		},
 		template: '<div class="bill"><qrcode version="4" size="400" data="pub:{{ngModel.pub}}"></qrcode><div class="main">'
-		+'Seriennummer: {{ngModel.pub}}<br><span class="wert">Wert: <span ng-if="ngModel.amount">{{ngModel.amount|number:2}}</span><span ng-if="!ngModel">unbekannt / ungültig</span></span><br>{{bank}}<br><a ng-href="bankurl" target="_blank">{{bankurl}}</a>'
+		+'Seriennummer: {{ngModel.pub}}<br><span class="wert"><span ng-if="ngModel.amount > 0">Wert: {{ngModel.amount|number:2}}</span><span ng-if="!(ngModel.amount > 0)" class="invalid">unbekannt / ungültig</span></span><br>{{bank}}<br><a ng-href="bankurl" target="_blank">{{bankurl}}</a>'
 		+'</div><img src="scramble.png" class="scramble" ng-if="ngModel.priv && !hidePriv"><div class="trenner" ng-if="ngModel.priv && !hidePriv"><span>hier knicken</span></div><qrcode version="4" size="400" data="priv:{{ngModel.priv}}" ng-if="ngModel.priv && !hidePriv"></qrcode></div>'
 	};
 });
