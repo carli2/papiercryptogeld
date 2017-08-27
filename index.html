@@ -48,13 +48,14 @@
 		<bill ng-repeat="bill in pocket" ng-model="bill" hide-priv="opts.nopriv"></bill>
 		<button class="noprint" ng-if="numSelected()" ng-click="removeSelected()">Ausgewählte entfernen</button>
 		<button class="noprint" ng-if="numSelected()" ng-click="slice()">Ausgewählte Scheine anders stückeln</button>
-		<button class="noprint" ng-click="create()">Schein erzeugen</button>
 		<hr class="noprint"/>
 		<button class="noprint" ng-click="print()">Geld ausdrucken</button>
 		<hr class="noprint"/>
 		<button class="noprint" ng-click="refreshAll()">aktualisieren</button>
 		<button class="noprint" ng-click="removeInvalid()">ungültige Scheine entfernen</button>
 		<button class="noprint" ng-click="removePublics()">Scheine ohne Zugriff entfernen</button>
+		<hr class="noprint"/>
+		<button class="noprint" ng-click="create()">Schein erzeugen</button>
 	</div>
 </body>
 </html>
