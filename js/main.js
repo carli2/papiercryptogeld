@@ -21,18 +21,46 @@ app.controller('Main', function ($scope) {
 	}
 	$scope.qrtext = 'Hello World';
 
+	$scope.pocket = [];
+
+	function refreshLocalStorage() {
+		var bills = {};
+		var billsp = {};
+		$scope.pocket.forEach(function (bill) {
+			bills[bill.pub] = bill;
+			if (bill.priv) {
+				billsp[bill.priv] = bill;
+				// meinen Schein im localStorage sichern
+				localStorage['priv:' + bill.priv] = bill.amount;
+			} else {
+				localStorage['pub:' + bill.pub] = bill.amount;
+			}
+		});
+		// Sachen aus dem localStorage aufnehmen
+		for (var i in localStorage) {
+			if (i.startsWith('pub:')) {
+				if (!bills[i.substr(4)]) {
+					$scope.pocket.push(new Token(i, refresh));
+				}
+			} else if (i.startsWith('priv:')) {
+				if (!billsp[i.substr(5)]) {
+					$scope.pocket.push(new Token(i, refresh));
+				}
+			}
+		}
+	}
+
+	// Scheine aus dem Storage laden
+	refreshLocalStorage();
+
 	function refresh() {
+		// auf neue Scheine aus anderen Tabs reagieren; eigene Scheine abspeichern
+		refreshLocalStorage();
 		$scope.$apply();
 	}
 
-	$scope.pocket = [
-		new Token(),
-		new Token('priv:cYG0SPLU2pGDeBmsF8R1WKAf9RL4E27eO/ZMIW2gJEA=', refresh), //new Token('priv:7181b448f2d4da91837819ac17c47558a01ff512f8136ede3bf64c216da02440'),
-		new Token('pub:AzGQ50Pam9ZhllEm52JvQLopzN5yxwJziybk6tkZjG5X', refresh) //new Token('pub:033190e743da9bd661965126e7626f40ba29ccde72c702738b26e4ead9198c6e57')*/
-	];
-
 	$scope.opts = {
-		nopriv: true // TODO: localStorage
+		nopriv: true
 	};
 
 	$scope.sum = function (selected) {
@@ -52,6 +80,10 @@ app.controller('Main', function ($scope) {
 	$scope.removeSelected = function () {
 		if (confirm('Mit dem Löschen der Scheine verlieren Sie das Geld, wenn Sie es vorher nicht ausgedruckt haben')) {
 			$scope.pocket = $scope.pocket.filter(function (bill) {
+				if (bill.selected) {
+					delete localStorage['pub:' + bill.pub];
+					delete localStorage['priv:' + bill.priv];
+				}
 				return !bill.selected;
 			});
 		}
@@ -114,11 +146,18 @@ app.controller('Main', function ($scope) {
 	$scope.addToPocket = function (bill) {
 		for (var i = 0; i < $scope.pocket.length; i++) {
 			if ($scope.pocket[i].pub == bill.pub) {
+				if (!$scope.pocket[i].priv && bill.priv) {
+					// Private Key nachrüsten
+					$scope.pocket[i] = bill;
+					return true;
+				}
 				alert('Der Schein ist schon in der Geldbörse');
 				return false;
 			}
 		}
 		$scope.pocket.splice(0, 0, bill);
+		refreshLocalStorage();
+		return true;
 	}
 
 	$scope.print = function () {
