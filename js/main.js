@@ -59,7 +59,7 @@ app.controller('Main', function ($scope) {
 		$scope.$apply();
 	}
 
-	function performTransaction(input, output) {
+	function performTransaction(input, output, onSuccess) {
 		Token.performTransaction(input, output, function () {
 			// Pocket nach Transaktion updaten
 			for (var i = 0; i < input.length; i++) {
@@ -75,6 +75,7 @@ app.controller('Main', function ($scope) {
 				$scope.pocket.splice(0, 0, output[i]);
 			}
 			// Scope applien und localStorage abspeichern
+			if (onSuccess) onSuccess();
 			refresh();
 		});
 	}
@@ -93,8 +94,36 @@ app.controller('Main', function ($scope) {
 		return result;
 	}
 
+	$scope.numSelected = function () {
+		var result = 0;
+		for (var i = 0; i < $scope.pocket.length; i++) {
+			if ($scope.pocket[i].selected) {
+				result++;
+			}
+		}
+		return result;
+	}
+
 	$scope.refreshAll = function () {
 		Token.refreshAll($scope.pocket);
+	}
+
+	$scope.offer = function (bill) {
+		$scope.qrtext = 'priv:' + bill.priv;
+		$scope.qrbill = bill;
+	}
+
+	$scope.remove = function (bill) {
+		if (confirm('Mit dem Löschen des Scheins verlieren Sie das Geld, wenn Sie es vorher nicht eingescant haben')) {
+			delete localStorage['pub:' + bill.pub];
+			delete localStorage['priv:' + bill.priv];
+			for (var i = 0; i < $scope.pocket.length; i++) {
+				if ($scope.pocket[i].pub == bill.pub) {
+					$scope.pocket.splice(i, 1);
+					return;
+				}
+			}
+		}
 	}
 
 	$scope.removeSelected = function () {
@@ -165,6 +194,53 @@ app.controller('Main', function ($scope) {
 			output.push(newToken);
 		}
 		performTransaction(input, output);
+	}
+
+	$scope.offerPayment = function () {
+		var amount = 0;
+		var input = $scope.pocket.filter(function (bill) {
+			if (bill.priv && bill.selected && bill.amount > 0) {
+				amount += Number(bill.amount);
+				return true;
+			} else return false;
+		});
+		if (input.length == 0) return alert('Keine Scheine ausgewählt');
+		var output = [];
+		var nextOutput = prompt('Bitte geben Sie an, welchen Wert Sie anbieten wollen:', amount);
+		if (nextOutput === undefined || nextOutput === null) return alert('Vorgang abgebrochen');
+		nextOutput = Number(nextOutput);
+		if (nextOutput <= 0) {
+			alert('Bitte geben Sie einen gültigen Wert ein');
+			return;
+		}
+		if (nextOutput > amount) {
+			alert('Der eingegebene Betrag ist zu groß. Bitte wählen Sie mehr Scheine aus.');
+			return;
+		}
+		if (nextOutput != Math.round(nextOutput)) {
+			alert('Es sind keine Kommawerte erlaubt');
+			return;
+		}
+		if (amount == nextOutput && input.length == 1) {
+			// Schein direkt anbieten
+			$scope.qrtext = 'pub:' + input[0].pub;
+			$scope.qrbill = input[0];
+			return;
+		}
+		var newToken = new Token(undefined, refresh);
+		newToken.amount = nextOutput;
+		output.push(newToken);
+		if (nextOutput < amount) {
+			var restToken = new Token(undefined, refresh);
+			restToken.amount = amount - nextOutput;
+			output.push(restToken);
+		}
+		
+		performTransaction(input, output, function () {
+			// abgespaltenen Geldbetrag anzeigen
+			$scope.qrtext = 'pub:' + newToken.pub;
+			$scope.qrbill = newToken;
+		});
 	}
 
 	$scope.create = function () {

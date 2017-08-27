@@ -25,9 +25,12 @@
 		<h2>Gescanntes Ergebnis</h2>
 		<qrcode data="{{qrtext}}" version="4" size="{{vh()}}"></qrcode>
 		<input ng-model="qrtext">
-		<bill ng-if="qrbill" ng-model="qrbill"></bill>
-		<div ng-if="qrbill">
-			<button ng-click="addToPocket(qrbill)">In die Geldbörse aufnehmen</button>
+		<bill ng-if="qrbill" ng-model="qrbill" hide-priv="opts.nopriv"></bill>
+		<div>
+			<button ng-if="qrbill" ng-click="addToPocket(qrbill)">In die Geldbörse aufnehmen</button>
+			<button ng-if="numSelected()" ng-click="offerPayment()">Bezahlung anbieten</button>
+			<button ng-if="qrbill && qrbill.amount > 0 && qrtext == 'pub:' + qrbill.pub && qrbill.priv" ng-click="offer(qrbill)">Bezahlung erlauben</button>
+			<button ng-if="qrbill && qrbill.amount > 0 && qrtext == 'priv:' + qrbill.priv" ng-click="remove(qrbill)">Betrag aus Geldbörse entfernen</button>
 		</div>
 	</div>
 	<div id="pocket">
@@ -42,8 +45,8 @@
 			<input type="checkbox" ng-model="opts.nopriv" id="nopriv"><label for="nopriv">Private Schlüssel verstecken</label>
 		</div>
 		<bill ng-repeat="bill in pocket" ng-model="bill" hide-priv="opts.nopriv"></bill>
-		<button class="noprint" ng-click="removeSelected()">Ausgewählte entfernen</button>
-		<button class="noprint" ng-click="slice()">Ausgewählte Scheine anders stückeln</button>
+		<button class="noprint" ng-if="numSelected()" ng-click="removeSelected()">Ausgewählte entfernen</button>
+		<button class="noprint" ng-if="numSelected()" ng-click="slice()">Ausgewählte Scheine anders stückeln</button>
 		<button class="noprint" ng-click="create()">Schein erzeugen</button>
 		<hr class="noprint"/>
 		<button class="noprint" ng-click="print()">Geld ausdrucken</button>
