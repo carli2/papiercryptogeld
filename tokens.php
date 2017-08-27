@@ -10,6 +10,11 @@ CREATE TABLE `test`.`tokens` ( `pubkey` VARCHAR(50) NOT NULL , `amount` BIGINT N
 require 'vendor/autoload.php';
 include 'conf.php';
 
+if (isset($_GET['bank'])) {
+	header('Content-Type: application/json');
+	die(json_encode($bankinfo));
+}
+
 die($db->query('SELECT amount FROM tokens WHERE pubkey = ' . $db->quote($_GET['pub']))->fetchColumn() ?: 0);
 
 /*

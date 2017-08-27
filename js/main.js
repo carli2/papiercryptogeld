@@ -35,6 +35,43 @@ app.controller('Main', function ($scope) {
 		nopriv: true // TODO: localStorage
 	};
 
+	$scope.sum = function () {
+		var result = 0;
+		for (var i = 0; i < $scope.pocket.length; i++) {
+			if ($scope.pocket[i].priv) {
+				result += Number($scope.pocket[i].amount) || 0;
+			}
+		}
+		return result;
+	}
+
+	$scope.refreshAll = function () {
+		Token.refreshAll($scope.pocket);
+	}
+
+	$scope.removeInvalid = function () {
+		$scope.pocket = $scope.pocket.filter(function (bill) {
+			return bill.amount > 0;
+		});
+	}
+
+	$scope.removePublics = function () {
+		$scope.pocket = $scope.pocket.filter(function (bill) {
+			return bill.priv;
+		});
+	}
+
+
+	$scope.addToPocket = function (bill) {
+		for (var i = 0; i < $scope.pocket.length; i++) {
+			if ($scope.pocket[i].pub == bill.pub) {
+				alert('Der Schein ist schon in der Geldbörse');
+				return false;
+			}
+		}
+		$scope.pocket.splice(0, 0, bill);
+	}
+
 	$scope.print = function () {
 		var oldopts = $scope.opts.nopriv;
 		$scope.opts.nopriv = false;
@@ -44,18 +81,4 @@ app.controller('Main', function ($scope) {
 			$scope.$apply();
 		}, 0);
 	}
-});
-
-app.directive('bill', function () {
-	return {
-		restrict: 'E',
-		scope: { ngModel: '=', hidePriv: '=' },
-		controller: function ($scope) {
-			$scope.bank = 'Werkraum Zittau e.V.';
-			$scope.bankurl = 'https://launix.de/';
-		},
-		template: '<div class="bill"><qrcode version="4" size="400" data="pub:{{ngModel.pub}}"></qrcode><div class="main">'
-		+'Seriennummer: {{ngModel.pub}}<br><span class="wert"><span ng-if="ngModel.amount > 0">Wert: {{ngModel.amount|number:2}}</span><span ng-if="!(ngModel.amount > 0)" class="invalid">unbekannt / ungültig</span></span><br>{{bank}}<br><a ng-href="bankurl" target="_blank">{{bankurl}}</a>'
-		+'</div><img src="scramble.png" class="scramble" ng-if="ngModel.priv && !hidePriv"><div class="trenner" ng-if="ngModel.priv && !hidePriv"><span>hier knicken</span></div><qrcode version="4" size="400" data="priv:{{ngModel.priv}}" ng-if="ngModel.priv && !hidePriv"></qrcode></div>'
-	};
 });

@@ -11,7 +11,6 @@
 <script type="text/javascript" src="node_modules/angular-qrcode/angular-qrcode.js"></script>
 <script type="text/javascript" src="js/instascan.min.js"></script>
 <script type="text/javascript" src="js/elliptic.min.js"></script>
-<script type="text/javascript" src="js/hex64.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
 <script type="text/javascript" src="js/tokens.js"></script>
 <script type="text/javascript" src="js/scan.js"></script>
@@ -28,16 +27,27 @@
 		<input ng-model="qrtext">
 		<bill ng-if="qrbill" ng-model="qrbill"></bill>
 		<div ng-if="qrbill">
-			<button>In die Geldbörse aufnehmen</button>
+			<button ng-click="addToPocket(qrbill)">In die Geldbörse aufnehmen</button>
 		</div>
 	</div>
 	<div id="pocket">
 		<h2>Meine Geldbörse</h2>
+		<div>
+			Gesamt: {{sum() | money}}
+		</div>
 		<div class="noprint">
 			<input type="checkbox" ng-model="opts.nopriv" id="nopriv"><label for="nopriv">Private Schlüssel verstecken</label>
 		</div>
 		<bill ng-repeat="bill in pocket" ng-model="bill" hide-priv="opts.nopriv"></bill>
 		<button class="noprint" ng-click="print()">Geld ausdrucken</button>
+		<hr/>
+		<button class="noprint" ng-click="refreshAll()">aktualisieren</button>
+		<button class="noprint" ng-click="removeInvalid()">ungültige Scheine entfernen</button>
+		<button class="noprint" ng-click="removePublics()">Scheine ohne Zugriff entfernen</button>
+		<hr/>
+		<button class="noprint" ng-click="sliceCustom()">Stückelung benutzerdefiniert</button>
+		<button class="noprint" ng-click="slice()">Stückelung 1, 5, 10, 50 usw. mit großen Scheinen</button>
+		<button class="noprint" ng-click="slice(2)">Stückelung 1, 5, 10, 50 usw. mit mind. 2 von jeder Sorte</button>
 	</div>
 </body>
 </html>

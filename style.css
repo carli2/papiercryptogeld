@@ -14,6 +14,8 @@ body>div {
 	align-items: stretch;
 }
 
+hr { width: 100%; }
+
 #scan {
 	min-width: 5cm;
 	flex-grow: 1;
