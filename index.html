@@ -33,7 +33,9 @@
 	<div id="pocket">
 		<h2>Meine Geldbörse</h2>
 		<div>
-			Gesamt-Besitz: {{sum() | money}}<br/>
+			Gesamt-Besitz: {{sum() | money}}
+		</div>
+		<div class="noprint">
 			Gesamt ausgewählt: {{sum(true) | money}}
 		</div>
 		<div class="noprint">
