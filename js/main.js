@@ -144,8 +144,9 @@ app.controller('Main', function ($scope) {
 		if (input.length == 0) return alert('Keine Scheine ausgewählt');
 		var output = [];
 		while (amount > 0) {
-			var nextOutput = Number(prompt('Bitte geben Sie den Wert für einen Schein ein:', amount));
-			if (nextOutput === undefined) return alert('Stückelungsvorgang abgebrochen');
+			var nextOutput = prompt('Bitte geben Sie den Wert für einen Schein ein:', amount);
+			if (nextOutput === undefined || nextOutput === null) return alert('Stückelungsvorgang abgebrochen');
+			nextOutput = Number(nextOutput);
 			if (nextOutput <= 0) {
 				alert('Bitte geben Sie einen gültigen Wert ein');
 				continue;
