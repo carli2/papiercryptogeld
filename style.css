@@ -1,42 +1,41 @@
-body {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	align-items: stretch;
-}
+@media screen {
+	body {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		align-items: stretch;
+	}
 
-body>div {
-	display: flex;
-	flex-direction: column;
-	flex-wrap: nowrap;
-	justify-content: flex-start;
-	align-items: stretch;
+	body>div {
+		display: flex;
+		flex-direction: column;
+		flex-wrap: nowrap;
+		justify-content: flex-start;
+		align-items: stretch;
+	}
+
+	#scan {
+		min-width: 5cm;
+		flex-grow: 1;
+	}
+
+	#scan video {
+		width: 100%;
+	}
+
+	#scan2 {
+		min-width: 5cm;
+		flex-grow: 1;
+	}
+
+	#pocket {
+		flex-grow: 3;
+	}
 }
 
 hr { width: 100%; }
 
-#scan {
-	min-width: 5cm;
-	flex-grow: 1;
-}
-
-#scan video {
-	width: 100%;
-}
-
-#scan2 {
-	min-width: 5cm;
-	flex-grow: 1;
-}
-
-#qrdescription {
-	font-size: 140%;
-}
-
-#pocket {
-	flex-grow: 3;
-}
 
 .bill {
 	display: flex;
@@ -51,6 +50,10 @@ hr { width: 100%; }
 
 .bill.selected {
 	background-color: #fee;
+}
+
+.bill .series {
+	font-size: 40%;
 }
 
 .bill .scramble {
@@ -108,4 +111,18 @@ hr { width: 100%; }
 	#scan, #scan2, .noprint {
 		display: none;
 	}
+
+	.bill {
+		font-size: 50%;
+		page-break-after:auto;
+		page-break-inside: avoid!important;
+		margin-top: 4mm;
+	}
+
+	.bill qrcode {
+		width: 3cm;
+		height: 3cm;
+		margin: 3mm;
+	}
+
 }

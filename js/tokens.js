@@ -93,7 +93,7 @@ if (typeof app !== 'undefined') {
 				$scope.currency = currency;
 			},
 			template: '<div class="bill" ng-class="{selected: ngModel.selected}" ng-click="ngModel.selected = !ngModel.selected"><qrcode version="4" size="400" data="pub:{{ngModel.pub}}"></qrcode><div class="main">'
-			+'Seriennummer: {{ngModel.pub}}<br><span class="wert"><span ng-if="ngModel.amount > 0">Wert: {{ngModel.amount|money}}</span><span ng-if="!(ngModel.amount > 0)" class="invalid">unbekannt / ungültig</span></span><br>{{currency.bank}}<br><a ng-href="currency.bankurl" target="_blank">{{currency.bankurl}}</a>'
+			+'<span class="series">{{ngModel.pub}}</span><br><span class="wert"><span ng-if="ngModel.amount > 0">Wert: {{ngModel.amount|money}}</span><span ng-if="!(ngModel.amount > 0)" class="invalid">unbekannt / ungültig</span></span><br>{{currency.bank}}<br><a ng-href="currency.bankurl" target="_blank">{{currency.bankurl}}</a>'
 			+'</div><div class="trenner" ng-if="ngModel.priv && !hidePriv"><span>hier knicken</span></div><img src="scramble.png" class="scramble" ng-if="ngModel.priv && !hidePriv"><div class="trenner" ng-if="ngModel.priv && !hidePriv"><span>hier knicken</span></div><qrcode version="4" size="400" data="priv:{{ngModel.priv}}" ng-if="ngModel.priv && !hidePriv"></qrcode></div>'
 		};
 	});
