@@ -49,6 +49,10 @@ hr { width: 100%; }
 	margin-bottom: 2mm;
 }
 
+.bill.selected {
+	background-color: #fee;
+}
+
 .bill .scramble {
 	width: 120px;
 	height: 120px;

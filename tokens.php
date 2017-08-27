@@ -15,6 +15,21 @@ if (isset($_GET['bank'])) {
 	die(json_encode($bankinfo));
 }
 
+if (isset($_GET['amount'])) {
+	if (!isset($_SERVER['PHP_AUTH_USER'])) {
+		header('WWW-Authenticate: Basic realm="Zugang erforderlich"');
+		header('HTTP/1.0 401 Unauthorized');
+		die('Sie sind nicht dazu berechtigt');
+	} else if ($_SERVER['PHP_AUTH_PW'] != $moneyPrintPassword) {
+		header('WWW-Authenticate: Basic realm="Zugang erforderlich"');
+		header('HTTP/1.0 401 Unauthorized');
+		die('Zugriff verweigert');
+	} else {
+		$db->query('INSERT INTO tokens SET pubkey = ' . $db->quote($_GET['pub']) . ', amount = ' . $db->quote($_GET['amount']));
+		die('OK');
+	}
+}
+
 die($db->query('SELECT amount FROM tokens WHERE pubkey = ' . $db->quote($_GET['pub']))->fetchColumn() ?: 0);
 
 /*

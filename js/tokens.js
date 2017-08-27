@@ -36,6 +36,12 @@ function Token(qrtext, onLoad) {
 		this.key = key;
 		this.pub = hexToBase(elliptic.utils.toHex(key.getPublic().encodeCompressed()));
 		this.priv = hexToBase(elliptic.utils.toHex(key.getPrivate().toArray()));
+		this.register = function (amount) {
+			$.get(baseurl + '?pub=' + escape(this.pub) + '&amount=' + escape(amount)).then(function (answer) {
+				alert(answer);
+				self.checkValidity();
+			});
+		}
 	} else {
 		// priv vs pub unterscheiden
 		if (qrtext.startsWith('priv:')) {
@@ -74,7 +80,7 @@ if (typeof app !== 'undefined') {
 				$scope.bank = 'Werkraum Zittau e.V.';
 				$scope.bankurl = 'https://launix.de/';
 			},
-			template: '<div class="bill"><qrcode version="4" size="400" data="pub:{{ngModel.pub}}"></qrcode><div class="main">'
+			template: '<div class="bill" ng-class="{selected: ngModel.selected}" ng-click="ngModel.selected = !ngModel.selected"><qrcode version="4" size="400" data="pub:{{ngModel.pub}}"></qrcode><div class="main">'
 			+'Seriennummer: {{ngModel.pub}}<br><span class="wert"><span ng-if="ngModel.amount > 0">Wert: {{ngModel.amount|money}}</span><span ng-if="!(ngModel.amount > 0)" class="invalid">unbekannt / ungültig</span></span><br>{{bank}}<br><a ng-href="bankurl" target="_blank">{{bankurl}}</a>'
 			+'</div><img src="scramble.png" class="scramble" ng-if="ngModel.priv && !hidePriv"><div class="trenner" ng-if="ngModel.priv && !hidePriv"><span>hier knicken</span></div><qrcode version="4" size="400" data="priv:{{ngModel.priv}}" ng-if="ngModel.priv && !hidePriv"></qrcode></div>'
 		};

@@ -35,10 +35,10 @@ app.controller('Main', function ($scope) {
 		nopriv: true // TODO: localStorage
 	};
 
-	$scope.sum = function () {
+	$scope.sum = function (selected) {
 		var result = 0;
 		for (var i = 0; i < $scope.pocket.length; i++) {
-			if ($scope.pocket[i].priv) {
+			if (selected ? $scope.pocket[i].selected : $scope.pocket[i].priv) {
 				result += Number($scope.pocket[i].amount) || 0;
 			}
 		}
@@ -47,6 +47,14 @@ app.controller('Main', function ($scope) {
 
 	$scope.refreshAll = function () {
 		Token.refreshAll($scope.pocket);
+	}
+
+	$scope.removeSelected = function () {
+		if (confirm('Mit dem Löschen der Scheine verlieren Sie das Geld, wenn Sie es vorher nicht ausgedruckt haben')) {
+			$scope.pocket = $scope.pocket.filter(function (bill) {
+				return !bill.selected;
+			});
+		}
 	}
 
 	$scope.removeInvalid = function () {
@@ -61,6 +69,47 @@ app.controller('Main', function ($scope) {
 		});
 	}
 
+	$scope.slice = function () {
+		var amount = 0;
+		var input = $scope.pocket.filter(function (bill) {
+			if (bill.priv && bill.selected && bill.amount > 0) {
+				amount += Number(bill.amount);
+				return true;
+			} else return false;
+		});
+		if (input.length == 0) return alert('Keine Scheine ausgewählt');
+		var output = [];
+		while (amount > 0) {
+			var nextOutput = Number(prompt('Bitte geben Sie den Wert für einen Schein ein:', amount));
+			if (nextOutput === undefined) return alert('Stückelungsvorgang abgebrochen');
+			if (nextOutput <= 0) {
+				alert('Bitte geben Sie einen gültigen Wert ein');
+				continue;
+			}
+			if (nextOutput > amount) {
+				alert('Der eingegebene Betrag ist zu groß');
+				continue;
+			}
+			if (nextOutput != Math.round(nextOutput)) {
+				alert('Es sind keine Kommawerte erlaubt');
+				continue;
+			}
+			var newToken = new Token(undefined, refresh);
+			newToken.amount = nextOutput;
+			amount -= nextOutput;
+			output.push(newToken);
+		}
+		Token.performTransaction(input, output, $scope.pocket);
+	}
+
+	$scope.create = function () {
+		var amount = prompt('Welchen Geldbetrag soll der Schein haben?', '0');
+		if (amount > 0) {
+			var token = new Token(undefined, refresh);
+			token.register(amount);
+			$scope.pocket.splice(0, 0, token);
+		}
+	}
 
 	$scope.addToPocket = function (bill) {
 		for (var i = 0; i < $scope.pocket.length; i++) {

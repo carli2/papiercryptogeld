@@ -33,21 +33,22 @@
 	<div id="pocket">
 		<h2>Meine Geldbörse</h2>
 		<div>
-			Gesamt: {{sum() | money}}
+			Gesamt-Besitz: {{sum() | money}}<br/>
+			Gesamt ausgewählt: {{sum(true) | money}}
 		</div>
 		<div class="noprint">
 			<input type="checkbox" ng-model="opts.nopriv" id="nopriv"><label for="nopriv">Private Schlüssel verstecken</label>
 		</div>
 		<bill ng-repeat="bill in pocket" ng-model="bill" hide-priv="opts.nopriv"></bill>
+		<button class="noprint" ng-click="removeSelected()">Ausgewählte entfernen</button>
+		<button class="noprint" ng-click="slice()">Ausgewählte Scheine anders stückeln</button>
+		<button class="noprint" ng-click="create()">Schein erzeugen</button>
+		<hr class="noprint"/>
 		<button class="noprint" ng-click="print()">Geld ausdrucken</button>
-		<hr/>
+		<hr class="noprint"/>
 		<button class="noprint" ng-click="refreshAll()">aktualisieren</button>
 		<button class="noprint" ng-click="removeInvalid()">ungültige Scheine entfernen</button>
 		<button class="noprint" ng-click="removePublics()">Scheine ohne Zugriff entfernen</button>
-		<hr/>
-		<button class="noprint" ng-click="sliceCustom()">Stückelung benutzerdefiniert</button>
-		<button class="noprint" ng-click="slice()">Stückelung 1, 5, 10, 50 usw. mit großen Scheinen</button>
-		<button class="noprint" ng-click="slice(2)">Stückelung 1, 5, 10, 50 usw. mit mind. 2 von jeder Sorte</button>
 	</div>
 </body>
 </html>
