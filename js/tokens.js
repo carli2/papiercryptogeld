@@ -23,7 +23,7 @@ function baseToHex(base) { return elliptic.utils.toHex(atob(base).split('').map(
 function Token(qrtext, onLoad) {
 	var self = this;
 	this.checkValidity = function () {
-		return $.get(baseurl + '?pub=' + escape(this.pub)).then(function (result) {
+		return $.get(baseurl + '?pub=' + encodeURIComponent(this.pub)).then(function (result) {
 			self.amount = result;
 			if (onLoad) onLoad(self);
 			return result;
@@ -37,7 +37,7 @@ function Token(qrtext, onLoad) {
 		this.pub = hexToBase(elliptic.utils.toHex(key.getPublic().encodeCompressed()));
 		this.priv = hexToBase(elliptic.utils.toHex(key.getPrivate().toArray()));
 		this.register = function (amount) {
-			$.get(baseurl + '?pub=' + escape(this.pub) + '&amount=' + escape(amount)).then(function (answer) {
+			$.get(baseurl + '?pub=' + encodeURIComponent(this.pub) + '&amount=' + encodeURIComponent(amount)).then(function (answer) {
 				alert(answer);
 				self.checkValidity();
 			});
@@ -66,6 +66,18 @@ Token.refreshAll = function (pocket) {
 	for (var i = 0; i < pocket.length; i++) {
 		pocket[i].checkValidity();
 	}
+}
+
+Token.performTransaction = function (input, output, onSuccess) {
+	var tx = input.map(function (bill) { return bill.pub; }).join(';') + '=>' + output.map(function (bill) { return bill.pub + ':' + bill.amount; }).join(';');
+	var sigs = input.map(function (bill) {
+		return btoa(String.fromCharCode.apply(null, bill.key.sign(tx).toDER()));
+	}).join(';');
+	$.get(baseurl + '?tx=' + encodeURIComponent(tx) + '&sigs=' + encodeURIComponent(sigs)).then(function () {
+		onSuccess();
+	}, function () {
+		alert('Transaktion fehlgeschlagen');
+	});
 }
 
 if (typeof module !== 'undefined') module.exports = Token;

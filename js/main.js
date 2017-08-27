@@ -59,6 +59,26 @@ app.controller('Main', function ($scope) {
 		$scope.$apply();
 	}
 
+	function performTransaction(input, output) {
+		Token.performTransaction(input, output, function () {
+			// Pocket nach Transaktion updaten
+			for (var i = 0; i < input.length; i++) {
+				var bill = input[i];
+				// ungültige Scheine aus localStorage raus
+				delete localStorage['pub:' + bill.pub];
+				delete localStorage['priv:' + bill.priv];
+				var idx = $scope.pocket.indexOf(bill);
+				if (idx != -1) $scope.pocket.splice(i, 1);
+			}
+			// Neue Scheine in Pocket eintragen
+			for (var i = 0; i < output.length; i++) {
+				$scope.pocket.splice(0, 0, output[i]);
+			}
+			// Scope applien und localStorage abspeichern
+			refresh();
+		});
+	}
+
 	$scope.opts = {
 		nopriv: true
 	};
@@ -91,13 +111,25 @@ app.controller('Main', function ($scope) {
 
 	$scope.removeInvalid = function () {
 		$scope.pocket = $scope.pocket.filter(function (bill) {
-			return bill.amount > 0;
+			if (bill.amount > 0) {
+				return true;
+			} else {
+				delete localStorage['pub:' + bill.pub];
+				delete localStorage['priv:' + bill.priv];
+				return false;
+			}
 		});
 	}
 
 	$scope.removePublics = function () {
 		$scope.pocket = $scope.pocket.filter(function (bill) {
-			return bill.priv;
+			if (bill.priv) {
+				return true;
+			} else {
+				delete localStorage['pub:' + bill.pub];
+				delete localStorage['priv:' + bill.priv];
+				return false;
+			}
 		});
 	}
 
@@ -131,7 +163,7 @@ app.controller('Main', function ($scope) {
 			amount -= nextOutput;
 			output.push(newToken);
 		}
-		Token.performTransaction(input, output, $scope.pocket);
+		performTransaction(input, output);
 	}
 
 	$scope.create = function () {
