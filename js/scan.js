@@ -5,7 +5,7 @@ $(function () {
 		if (cameras.length > 0) {
 			var favourite = 0;
 			for (var i = 0; i < cameras.length; i++) {
-				if (cameras[i].name.indexOf('back') != -1) favourite = i;
+				if (cameras[i].name && cameras[i].name.indexOf('back') != -1) favourite = i;
 			}
 			scanner.start(cameras[favourite]);
 		} else {

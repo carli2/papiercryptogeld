@@ -17,6 +17,7 @@ app.controller('Main', function ($scope) {
 			});
 		} catch (e) {
 		}
+		$(window).scrollTo('#scan2');
 		$scope.$apply();
 	}
 	$scope.qrtext = 'Hello World';
@@ -111,6 +112,7 @@ app.controller('Main', function ($scope) {
 	$scope.offer = function (bill) {
 		$scope.qrtext = 'priv:' + bill.priv;
 		$scope.qrbill = bill;
+		$(window).scrollTo('#scan2');
 	}
 
 	$scope.has = function (pub) {
@@ -186,6 +188,7 @@ app.controller('Main', function ($scope) {
 		performTransaction(input, [newToken], function () {
 			$scope.qrtext = 'Erfolg';
 			$scope.qrbill = null;
+			$(window).scrollTo('#pocket');
 		});
 	}
 
@@ -221,6 +224,7 @@ app.controller('Main', function ($scope) {
 			output.push(newToken);
 		}
 		performTransaction(input, output);
+		$(window).scrollTo('#pocket');
 	}
 
 	$scope.offerPayment = function () {
@@ -252,6 +256,7 @@ app.controller('Main', function ($scope) {
 			// Schein direkt anbieten
 			$scope.qrtext = 'pub:' + input[0].pub;
 			$scope.qrbill = input[0];
+			$(window).scrollTo('#scan2');
 			return;
 		}
 		var newToken = new Token(undefined, refresh);
@@ -267,6 +272,7 @@ app.controller('Main', function ($scope) {
 			// abgespaltenen Geldbetrag anzeigen
 			$scope.qrtext = 'pub:' + newToken.pub;
 			$scope.qrbill = newToken;
+			$(window).scrollTo('#scan2');
 		});
 	}
 
@@ -276,6 +282,7 @@ app.controller('Main', function ($scope) {
 			var token = new Token(undefined, refresh);
 			token.register(amount);
 			$scope.pocket.splice(0, 0, token);
+			$(window).scrollTo('#pocket');
 		}
 	}
 
