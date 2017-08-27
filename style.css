@@ -107,8 +107,13 @@ hr { width: 100%; }
 	height: 100%;
 }
 
+button {
+	height: 1cm;
+	margin: 2mm;
+}
+
 @media print {
-	#scan, #scan2, .noprint {
+	#scan, #scan2, .noprint, button {
 		display: none;
 	}
 
