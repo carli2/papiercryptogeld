@@ -1,5 +1,13 @@
 <?php
 
+/*
+
+SQL Schema:
+CREATE TABLE `tokens` ( `pubkey` VARCHAR(50) NOT NULL , `amount` BIGINT NOT NULL , PRIMARY KEY (`pubkey`)) ENGINE = InnoDB;
+
+*/
+
+
 $db = new PDO('mysql:host=localhost;dbname=...', '...', '...');
 
 $bankinfo = array(

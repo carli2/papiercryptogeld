@@ -1,12 +1,5 @@
 <?php
 
-/*
-
-SQL Schema:
-CREATE TABLE `test`.`tokens` ( `pubkey` VARCHAR(50) NOT NULL , `amount` BIGINT NOT NULL , PRIMARY KEY (`pubkey`)) ENGINE = InnoDB;
-
-*/
-
 require 'vendor/autoload.php';
 include 'conf.php';
 
