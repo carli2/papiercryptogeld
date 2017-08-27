@@ -68,7 +68,7 @@ app.controller('Main', function ($scope) {
 				delete localStorage['pub:' + bill.pub];
 				delete localStorage['priv:' + bill.priv];
 				var idx = $scope.pocket.indexOf(bill);
-				if (idx != -1) $scope.pocket.splice(i, 1);
+				if (idx != -1) $scope.pocket.splice(idx, 1);
 			}
 			// Neue Scheine in Pocket eintragen
 			for (var i = 0; i < output.length; i++) {

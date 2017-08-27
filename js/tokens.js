@@ -70,8 +70,9 @@ Token.refreshAll = function (pocket) {
 
 Token.performTransaction = function (input, output, onSuccess) {
 	var tx = input.map(function (bill) { return bill.pub; }).join(';') + '=>' + output.map(function (bill) { return bill.pub + ':' + bill.amount; }).join(';');
+	var hash = ec.hash().update(tx).digest();
 	var sigs = input.map(function (bill) {
-		return btoa(String.fromCharCode.apply(null, bill.key.sign(tx).toDER()));
+		return btoa(String.fromCharCode.apply(null, bill.key.sign(hash).toDER()));
 	}).join(';');
 	$.get(baseurl + '?tx=' + encodeURIComponent(tx) + '&sigs=' + encodeURIComponent(sigs)).then(function () {
 		onSuccess();
