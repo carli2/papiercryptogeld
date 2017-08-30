@@ -28,8 +28,10 @@
 		<input ng-model="qrtext">
 		<bill ng-if="qrbill" ng-model="qrbill" hide-priv="opts.nopriv"></bill>
 		<div>
-			<button ng-if="qrbill" ng-click="addToPocket(qrbill)" ng-disabled="has(qrbill.pub)">In die Geldbörse aufnehmen</button>
-			<button ng-if="qrbill && qrbill.priv && qrbill.amount > 0" ng-click="fuse(qrbill)">entwerten und verschmelzen</button>
+			<div ng-if="qrbill && !qrbill.priv">Im Lesefeld befindet sich die Seriennummer eines Scheines. Die Seriennummer dient der Prüfung der Echtheit.</div>
+			<div ng-if="qrbill && qrbill.priv">Im Lesefeld befindet sich der Zugangscode eines Scheines. Mit dem Zugangscode kann man den Schein in Besitz nehmen.</div>
+			<button ng-if="qrbill && qrbill.priv && qrbill.amount > 0" ng-click="addToPocket(qrbill)" ng-disabled="has(qrbill.pub)">In die Geldbörse aufnehmen</button>
+			<button ng-if="qrbill && qrbill.priv && qrbill.amount > 0 && !has(qrbill.pub)" ng-click="fuse(qrbill)">entwerten und verschmelzen</button>
 			<button ng-if="numSelected()" ng-click="offerPayment()">Bezahlung anbieten</button>
 			<button ng-if="qrbill && qrbill.amount > 0 && qrtext == 'pub:' + qrbill.pub && qrbill.priv" ng-click="offer(qrbill)">Bezahlung erlauben</button>
 			<button ng-if="qrbill && qrbill.amount > 0 && qrtext == 'priv:' + qrbill.priv && has(qrbill.pub)" ng-click="remove(qrbill.pub)">Betrag aus Geldbörse entfernen</button>
@@ -55,7 +57,6 @@
 		<hr class="noprint"/>
 		<button class="noprint" ng-click="refreshAll()">aktualisieren</button>
 		<button class="noprint" ng-click="removeInvalid()">ungültige Scheine entfernen</button>
-		<button class="noprint" ng-click="removePublics()">Scheine ohne Zugriff entfernen</button>
 		<hr class="noprint"/>
 		<button class="noprint" ng-click="create()">Schein erzeugen</button>
 	</div>

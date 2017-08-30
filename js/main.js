@@ -160,18 +160,6 @@ app.controller('Main', function ($scope) {
 		});
 	}
 
-	$scope.removePublics = function () {
-		$scope.pocket = $scope.pocket.filter(function (bill) {
-			if (bill.priv) {
-				return true;
-			} else {
-				delete localStorage['pub:' + bill.pub];
-				delete localStorage['priv:' + bill.priv];
-				return false;
-			}
-		});
-	}
-
 	$scope.fuse = function (bill2) {
 		var amount = Number(bill2.amount);
 		var input = $scope.pocket.filter(function (bill) {
